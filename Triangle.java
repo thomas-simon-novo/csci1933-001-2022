@@ -1,4 +1,5 @@
 import java.awt.Color;
+
 //TODO 
 // write to sting and object function?
 public class Triangle {
