@@ -19,15 +19,19 @@ public class FractalDrawer {
             Rectangle calcRectangle = new Rectangle(200, 200, 200, 200);
             this.totalArea = this.totalArea + calcRectangle.calculateArea();
         }
-        if (type.equals("2")){
+        else if (type.equals("2")){
             drawTriangleFractal(200,200,300,450, colorArray[1],drawing, 3);
             Triangle calcTriangle = new Triangle(300, 450, 200, 200);
             this.totalArea = this.totalArea + calcTriangle.calculateArea();
         }
-        if (type.equals("3")){
+        else if (type.equals("3")){
             drawCircleFractal(100, 400, 400, colorArray[1], drawing, 3);
             Circle calcCircle = new Circle(400, 400, 100);
             this.totalArea = this.totalArea + calcCircle.calculateArea();
+        }
+        else{
+            System.out.println("incorrect input close program and try again");
+            return 0;
         }
         return totalArea;
     }
@@ -41,7 +45,6 @@ public class FractalDrawer {
         else{
             Triangle myTriangle = new Triangle(x, y, width, height);
             myTriangle.setColor(c);
-
             can.drawShape(myTriangle);
             FractalDrawer nextLevel = new FractalDrawer();
             Color nextColor=colorArray[level % 3];
@@ -51,8 +54,7 @@ public class FractalDrawer {
             this.totalArea = totalArea + myTriangle.calculateArea();
         }
     }
-    // TODO:
-    // drawCircleFractal draws a circle fractal using recursive techniques
+
     public void drawCircleFractal(double radius, double x, double y, Color c, Canvas can, int level) {
         if (level == 0){//base case 
             return;
@@ -75,17 +77,14 @@ public class FractalDrawer {
 
 /**
  * 
- * @param width
- * @param height
- * @param x
- * @param y
- * @param c
- * @param can
- * @param level
+ * @param width of rectangle 
+ * @param height of rectangle 
+ * @param x position of bottom left corner of rectangle 
+ * @param y position of bottom left corner of rectangle 
+ * @param c color of rectangle 
+ * @param can class for canvas 
+ * @param level of iteration/recursion of the fractal 
  */
-    //TODO: 
- 
-    // drawRectangleFractal draws a rectangle fractal using recursive techniques
     public void drawRectangleFractal(double width, double height, double x, double y, Color c, Canvas can, int level) {
         if (level == 0){//base case 
             return;
@@ -108,9 +107,7 @@ public class FractalDrawer {
         }
     }
 
-    //TODO:
-    // main should ask user for shape input, and then draw the corresponding fractal.
-    // should print area of fractal
+
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
         System.out.print("enter 1 for rectangles 2 for triangles 3 for circles \n");
