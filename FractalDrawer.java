@@ -7,7 +7,8 @@ public class FractalDrawer {
     private double totalArea=0;  // member variable for tracking the total area
     private Color[] colorArray = {Color.green, Color.red, Color.blue}; //array to cycle thru colors 
     public FractalDrawer() {}  // contructor
-
+    // private Rectangle myRectangle = new Rectangle(300, 200, 200, 200);
+    // private FractalDrawer nextLevel = new FractalDrawer();
     //TODO:
     // drawFractal creates a new Canvas object
     // and determines which shapes to draw a fractal by calling appropriate helper function
@@ -15,9 +16,9 @@ public class FractalDrawer {
     public double drawFractal(String type) {
         Canvas drawing = new Canvas(800,800);
         if (type.equals("1")){ //draw fractal selected 
-            drawRectangleFractal(200, 200, 300, 200, colorArray[1], drawing, 3);
-            Rectangle calcRectangle = new Rectangle(200, 200, 200, 200);
-            this.totalArea = this.totalArea + calcRectangle.calculateArea();
+            drawRectangleFractal(200, 200, 300, 200, colorArray[1], drawing, 4);
+            // Rectangle calcRectangle = new Rectangle(200, 200, 200, 200);
+            // this.totalArea = this.totalArea + calcRectangle.calculateArea();
         }
         else if (type.equals("2")){
             drawTriangleFractal(200,200,300,450, colorArray[1],drawing, 3);
@@ -31,7 +32,6 @@ public class FractalDrawer {
         }
         else{
             System.out.println("incorrect input close program and try again");
-            return 0;
         }
         return totalArea;
     }
@@ -48,9 +48,10 @@ public class FractalDrawer {
             can.drawShape(myTriangle);
             FractalDrawer nextLevel = new FractalDrawer();
             Color nextColor=colorArray[level % 3];
-            nextLevel.drawTriangleFractal(width/2, height/2, x-width/2, y, nextColor, can, level-1);//puts smaller (1/2 size of origional triangle) at bottom left
-            nextLevel.drawTriangleFractal(width/2, height/2, x+(width/4), y-height, nextColor, can, level-1);//puts smaller (1/2 size of origional triangle) at top center of orig triangle  
-            nextLevel.drawTriangleFractal(width/2, height/2, x+width, y, nextColor, can, level-1);//puts smaller (1/2 size of origional triangle) at bottom right of orig triangle 
+            int newLevel = level - 1;
+            nextLevel.drawTriangleFractal(width/2, height/2, x-width/2, y, nextColor, can, newLevel);//puts smaller (1/2 size of origional triangle) at bottom left
+            nextLevel.drawTriangleFractal(width/2, height/2, x+(width/4), y-height, nextColor, can, newLevel);//puts smaller (1/2 size of origional triangle) at top center of orig triangle  
+            nextLevel.drawTriangleFractal(width/2, height/2, x+width, y, nextColor, can, newLevel);//puts smaller (1/2 size of origional triangle) at bottom right of orig triangle 
             this.totalArea = totalArea + myTriangle.calculateArea();
         }
     }
@@ -67,10 +68,11 @@ public class FractalDrawer {
             FractalDrawer nextLevel = new FractalDrawer();
             Color nextColor = colorArray[level % 3];
             this.totalArea = this.totalArea + myCircle.calculateArea();   
-            nextLevel.drawCircleFractal(radius / 2, x + 1.5 * radius, y, nextColor, can, level-1);
-            nextLevel.drawCircleFractal(radius / 2, x, y + 1.5 * radius, nextColor, can, level-1);     
-            nextLevel.drawCircleFractal(radius / 2, x - 1.5 * radius, y, nextColor, can, level-1);
-            nextLevel.drawCircleFractal(radius / 2, x, y - 1.5 * radius, nextColor, can, level-1);      
+            int newLevel = level - 1;
+            nextLevel.drawCircleFractal(radius / 2, x + 1.5 * radius, y, nextColor, can, newLevel);
+            nextLevel.drawCircleFractal(radius / 2, x, y + 1.5 * radius, nextColor, can, newLevel);     
+            nextLevel.drawCircleFractal(radius / 2, x - 1.5 * radius, y, nextColor, can, newLevel);
+            nextLevel.drawCircleFractal(radius / 2, x, y - 1.5 * radius, nextColor, can, newLevel);      
         }
     }
 
@@ -86,33 +88,43 @@ public class FractalDrawer {
  * @param level of iteration/recursion of the fractal 
  */
     public void drawRectangleFractal(double width, double height, double x, double y, Color c, Canvas can, int level) {
-        if (level == 0){//base case 
+        if (level == 0 || width < 1 || height < 1){//base case 
             return;
         }
         else{
             Rectangle myRectangle = new Rectangle(x, y, width, height);
+
+            // myRectangle.setHeight(height);
+            // myRectangle.setWidth(width);
+            // myRectangle.setPos(x, y);
             myRectangle.setColor(c);
-            totalArea = totalArea + myRectangle.calculateArea();
+            // totalArea = totalArea + myRectangle.calculateArea();
             can.drawShape(myRectangle);
-            FractalDrawer nextLevel = new FractalDrawer();
+
             Color nextColor=colorArray[level % 3];
-            double divis = 2; // determin how much the size is reduced in the fractal 
-            double newWidth = width / divis;
-            double newHeight = height / divis;
-            nextLevel.drawRectangleFractal(newWidth, newHeight, x + width, y + height, nextColor, can, level-1);
-            nextLevel.drawRectangleFractal(newWidth, newHeight, x - (1 / divis) * width, y - (1 / divis) * height, nextColor, can, level-1);
-            nextLevel.drawRectangleFractal(newWidth, newHeight, x + width, y - (1 / divis) * height, nextColor, can, level-1);
-            nextLevel.drawRectangleFractal(newWidth, newHeight, x - (1 / divis) * width, y + height, nextColor, can, level-1);
-            totalArea = totalArea + myRectangle.calculateArea();              
+            
+            // myRectangle.setColor(nextColor);
+
+            // double newWidth = width / 2;
+            // double newHeight = height / 2;
+            int newLevel = level - 1;
+            drawRectangleFractal(width / 2, height / 2, x + width, y + height, nextColor, can, newLevel);
+            drawRectangleFractal(width / 2, height / 2, x - (width / 2), y - (height / 2), nextColor, can, newLevel);
+            drawRectangleFractal(width / 2, height / 2, x + width, y - (height / 2), nextColor, can, newLevel);
+            drawRectangleFractal(width / 2, height / 2, x - (width / 2), y + height, nextColor, can, newLevel); 
+            this.totalArea = this.totalArea + myRectangle.calculateArea();
+             
         }
     }
 
 
     public static void main(String[] args){
+        FractalDrawer test = new FractalDrawer();
         Scanner input = new Scanner(System.in);
         System.out.print("enter 1 for rectangles 2 for triangles 3 for circles \n");
         String userChoice = input.nextLine();
-        FractalDrawer test = new FractalDrawer();
         System.out.println(test.drawFractal(userChoice));
+        // System.out.println(test.drawFractal("1"));
+
     }
 }
