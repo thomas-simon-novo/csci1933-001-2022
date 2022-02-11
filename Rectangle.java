@@ -43,7 +43,8 @@ public class Rectangle {
     public void setColor(Color c){
         color=c;
     }
-
+ 
+    
     public void setPos(double x, double y){
         xPos = x; 
         yPos = y; 
